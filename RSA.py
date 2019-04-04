@@ -1,11 +1,12 @@
 import random
-import math
 import gen_random
 from exponential import exp_mode
 from gcd import ext_gcd
 import MillerRabin
+import ascii
 
 def gen_prime():
+    # 测试三次
     prime = gen_random.pseudoprime_number()
     flag1 = MillerRabin.millerrabin(prime)
     flag2 = MillerRabin.millerrabin(prime)
@@ -54,7 +55,7 @@ def decrypt(c, privatekey):
     m = exp_mode(c, d, n)
     return m
 
-if __name__ == "__main__":
+def main():
     p = gen_prime()
     print('p', p)
     q = gen_prime()
@@ -62,10 +63,20 @@ if __name__ == "__main__":
     pubickey, privatekey = gen_key(p, q)
     '''if privatekey[1] < 0:
         print("please retry")'''
-    # info = map(ord, "Mathematical Fundation of Information security + 201202001 + 517021910564")
-    m = 517021910564123456789456123
-    c = encrypt(m, pubickey)
-    print('c', c)
-    d = decrypt(c, privatekey)
-    print('d', d)
 
+    # info = map(ord, "Mathematical Fundation of Information security + 201202001 + 517021910564")
+    m = "Mathematical Fundation of Information security + 201202001 + 517021910564"
+    l = ascii.encode(m)
+    s = []
+    for m in l: 
+        c = encrypt(m, pubickey)
+        # print('c', c)
+        d = decrypt(c, privatekey)
+        # print('d', d)
+        s.append(d)
+    result = ascii.decode(s)
+    print('result:', result)
+    return result
+
+if __name__ == '__main__':
+    main()
