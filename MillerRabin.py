@@ -15,7 +15,7 @@ def millerrabin(n):
     # print (a, m)
 
     # caculate b**m % n by Montgeomery
-    b = random.randint(2,10)
+    b = random.randint(2,100)
     x = exp_mode(b, m, n)
     # print(b, x)
 

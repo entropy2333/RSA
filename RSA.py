@@ -7,8 +7,13 @@ import MillerRabin
 
 def gen_prime():
     prime = gen_random.pseudoprime_number()
-    if MillerRabin.millerrabin(prime) == False:
+    flag1 = MillerRabin.millerrabin(prime)
+    flag2 = MillerRabin.millerrabin(prime)
+    flag3 = MillerRabin.millerrabin(prime)
+    if not (flag1 and flag2 and flag3):
         prime = gen_prime()
+    '''if MillerRabin.millerrabin(prime) == False:
+        prime = gen_prime()'''
     return prime
 
 def gen_key(p, q):
@@ -18,9 +23,18 @@ def gen_key(p, q):
     a = e
     b = euler
     r, x, y = ext_gcd(a, b)
+    while r != 1:
+        e = random.randint(3, euler)
+        a = e
+        b = euler
+        r, x, y = ext_gcd(a, b)
+    print('r', r)
+    print('euler', euler)
     print('x', x)
     if x < 0:
         print("x is negative")
+        x = x - (x // (b // r)) * (b // r)
+        print('x', x)
     d = x
     # error happens when x is negative
     print('n', n, 'e', e, 'd', d)
@@ -46,10 +60,10 @@ if __name__ == "__main__":
     q = gen_prime()
     print('q', q)
     pubickey, privatekey = gen_key(p, q)
-    if privatekey[1] < 0:
-        print("please retry")
+    '''if privatekey[1] < 0:
+        print("please retry")'''
     # info = map(ord, "Mathematical Fundation of Information security + 201202001 + 517021910564")
-    m = 517021910564
+    m = 517021910564123456789456123
     c = encrypt(m, pubickey)
     print('c', c)
     d = decrypt(c, privatekey)
